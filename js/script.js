@@ -4,16 +4,15 @@ async function init(){
     {method: 'GET' , headers: {ContentType: 'application/json'}});
     let response = await getCoursesFromAPI.json();
     let data = await response;
-    // call other functions with the API data passed in
-    renderCourses(data.courses);
+    renderCoursesInfo(data.courses);
 }
 
-function renderCourses(courses){
+function renderCoursesInfo(courses){
     console.log(courses);
     let textBuffer = '';
     courses.forEach(course=>{
         let code = `
-            <div>
+            <div style="color:white;background:black;">
             <h1>${course.name}</h1>
             <img onclick="selectCourse('${course.id}')" src="${course.image}"/>
             <p>${course.id}</p>
@@ -21,7 +20,7 @@ function renderCourses(courses){
         `;
         textBuffer += code;
     })
-    document.getElementById('course_info').innerHTML = textBuffer;
+    document.getElementById('all_courses_info').innerHTML = textBuffer;
 }
 
 async function selectCourse(id){
@@ -29,11 +28,35 @@ async function selectCourse(id){
     {method: 'GET' , headers: {ContentType: 'application/json'}});
     let response = await getCourseFromAPI.json();
     let data = await response;
-    renderCourse(data.data);
+    renderSelectedCourse(data.data);
 }
 
-function renderCourse(data){
-    console.log(data.holes);
+function renderSelectedCourse(data){
+    console.log(data);
+    let textBuffer = '';
+    for(let key in data){
+        console.log(key, data[key]);
+        if (!Array.isArray(data[key])){
+            let code = `
+                <div style="color:black;background:white;">
+                    <p>${key}: ${data[key]}</p>
+                </div>
+            `;
+            textBuffer += code;
+        } else {
+            data.holes.forEach(hole=>{
+                for(let prop in hole){
+                    let code =`
+                    <div style="color:black;background:white;">
+                        <p>${prop}: ${hole[prop]}</p>
+                    </div>
+                    `;
+                    textBuffer += code;
+                }
+            })
+        }
+    }
+    document.getElementById('selected_course_info').innerHTML = textBuffer;
 }
 
 
