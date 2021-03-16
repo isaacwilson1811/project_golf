@@ -28,8 +28,6 @@ function displayAllCourses(courses){
     document.getElementById('all_courses_info').innerHTML = openHTML+textBuffer+closeHTML;
 }
 
-
-
 // Click Event to selected a course
 async function selectCourse(id){
     const callAPI = await fetch('https://golf-courses-api.herokuapp.com/courses/'+id);
@@ -40,10 +38,19 @@ async function selectCourse(id){
 
 // extract the needed information
 function extractSelectedCourseData(obj){
-    // console.log(obj);
     let selectedCourse = new Course(obj);
     console.log(selectedCourse);
+}
 
+class TeeBox{
+    constructor(obj){
+        this.name = obj.teeType,
+        this.color = obj.teeColorType,
+        this.hexColor = obj.teeHexColor,
+        this.hcp = obj.hcp,
+        this.par = obj.par,
+        this.yards = obj.yards
+    }
 }
 
 class Course {
@@ -51,10 +58,24 @@ class Course {
         this.name = obj.name;
         this.id = obj.courseId;
         this.holeCount = obj.holeCount;
-        this.holes = Course.extractHoles(obj.holes);
+        // this.holesDump = obj.holes;
+        this.teeBoxesPerHole = Course.extractTeeBoxes(obj.holes)
     }
-    static extractHoles(array){
-        return array;
+    static extractTeeBoxes(array){
+        let courseHoles = [];
+        for (let i=0; i<array.length; i++){
+            let hole = [];
+            for (let j=0; j<array[i].teeBoxes.length; j++){
+                if (array[i].teeBoxes[j].teeType == 'auto change location'){
+                    continue;
+                }else {
+                    let teebox = new TeeBox(array[i].teeBoxes[j]);
+                    hole.push(teebox);
+                }
+            }
+            courseHoles.push(hole);
+        }
+        return courseHoles;
     }
 }
 
