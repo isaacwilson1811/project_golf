@@ -11,7 +11,7 @@ async function getDataAllCourses(){
 
 // Display the All Courses Data
 function displayAllCourses(courses){
-    // console.log(courses);
+    console.log(courses);
     let openHTML = '<div style="display:flex;flex-direction:column;">'
     let closeHTML = '</div>';
     let textBuffer = '';
@@ -40,6 +40,46 @@ async function selectCourse(id){
 function extractSelectedCourseData(obj){
     let selectedCourse = new Course(obj);
     console.log(selectedCourse);
+    fillcourseData(selectedCourse);
+}
+
+class Player {
+    constructor(name){
+        this.name = name;
+        this.strokes = [];
+        this.chosenTeeBox = null;
+    }
+}
+
+let players = [];
+let player1 = new Player('jim');
+
+
+
+function fillcourseData(obj){
+    drawThis('par_display','PAR',' ','par');
+    drawThis('yard_display','YARDS','tee color','yards');
+    drawThis('hcp_display','HCP',' ','hcp');
+    function drawThis(html,ROW,HEAD,prop){
+        let drawTo = document.getElementById(html);
+        let buffer = '<th scope="row">'+ROW+'</th><td>'+HEAD+'</td>';
+        let OutTotal = 0;
+        let InTotal = 0;
+        for (let i = 0; i < 9; i++){
+            let chunk = `<td>${obj.teeBoxesPerHole[i][1][prop]}</td>`;
+            buffer += chunk;
+            OutTotal += obj.teeBoxesPerHole[i][1][prop];
+        }
+        buffer += '<td>'+ OutTotal +'</td>';
+        for (let i = 9; i < 18; i++){
+            let chunk = '<td>'+ obj.teeBoxesPerHole[i][1][prop] +'</td>';
+            buffer += chunk;
+            InTotal += obj.teeBoxesPerHole[i][1][prop];
+        }
+        buffer += '<td>'+ OutTotal +'</td>';
+        buffer += '<td>'+ (OutTotal+InTotal) +'</td>';
+        drawTo.innerHTML = buffer;
+    }
 }
 
 class TeeBox{
