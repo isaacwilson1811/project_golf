@@ -43,17 +43,34 @@ function extractSelectedCourseData(obj){
     fillcourseData(selectedCourse);
 }
 
-class Player {
-    constructor(name){
-        this.name = name;
-        this.strokes = [];
-        this.chosenTeeBox = null;
+class GameData {
+    constructor(){
+        // this.courseID = courseID;
+        this.playerCount = 0;
+        this.players = {};
+    }
+    addPlayer(name){
+        if (this.playerCount < 4){
+            this.playerCount++;
+            this.players[`p${this.playerCount}`] = new Player(name);
+        }else{
+            console.log('max players is 4');
+        }
     }
 }
 
-let players = [];
-let player1 = new Player('jim');
+class Player{
+    constructor(name){
+        this.name = name;
+        this.strokes = [];
+    }
+}
 
+const gameData = new GameData();
+gameData.addPlayer('isaac');
+gameData.addPlayer('jim');
+gameData.addPlayer('sally');
+gameData.addPlayer('bob');
 
 
 function fillcourseData(obj){
@@ -119,82 +136,13 @@ class Course {
     }
 }
 
-    // let holesData = []
-    // let holesArr = data.holes;
-    // let yardsArr = [];
-    // let parArr = [];
-    // for (let i = 0; i < holesArr.length; i++){
-    //     yardsArr.push(holesArr[i].teeBoxes[0].yards);
-    //     parArr.push(holesArr[i].teeBoxes[0].par);
-    // }
-    // displayHolesData(yardsArr,parArr);
-
-    // let textBuffer = '';
-    // for(let key in data){
-    //     console.log(key, data[key]);
-    //     if (!Array.isArray(data[key])){
-    //         let code = `
-    //             <div style="color:black;background:white;">
-    //                 <p>${key}: ${data[key]}</p>
-    //             </div>
-    //         `;
-    //         textBuffer += code;
-    //     } else {
-    //         data.holes.forEach(hole=>{
-    //             for(let prop in hole){
-    //                 let code =`
-    //                 <div style="color:black;background:white;">
-    //                     <p>${prop}: ${hole[prop]}</p>
-    //                 </div>
-    //                 `;
-    //                 textBuffer += code;
-    //             }
-    //         })
-    //     }
-    // }
-    // document.getElementById('selected_course_info').innerHTML = textBuffer;
-
-
-
-// const courseIDs = [];
-// var course1;
-// var course2;
-// var course3;
-
-// function fetchGolfCourses(){
-//     fetch('https://golf-courses-api.herokuapp.com/courses',
-//     {
-//     method: 'GET',
-//     headers: {
-//         ContentType: 'application/json',
-//     }
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         // courseIDs.push(data.courses[0].id);
-//         // courseIDs.push(data.courses[1].id);
-//         // courseIDs.push(data.courses[2].id);
-//         // console.log(courseIDs);
-//         course1 = new golfCourse(data.courses[0].id);
-//         course2 = new golfCourse(data.courses[1].id);
-//         course3 = new golfCourse(data.courses[2].id);
-//     });
-// }
-
-// class golfCourse {
-//     constructor(id){
-//         this.id = id;
-//         this.data = {};
-//     }
-//     fetchCourseData = function(){
-//         fetch('https://golf-courses-api.herokuapp.com/courses/'+this.id)
-//         .then(response => response.json())
-//         .then(data => console.log(data))
+// class Player {
+//     constructor(name){
+//         this.name = name;
+//         this.strokes = [];
+//         this.chosenTeeBox = null;
 //     }
 // }
 
-
-
-// // course1.fetchCourseData();
-
-// fetchGolfCourses();
+// let players = [];
+// let player1 = new Player('jim');
