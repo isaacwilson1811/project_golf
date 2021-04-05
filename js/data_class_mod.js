@@ -1,7 +1,11 @@
 // console.log('players', Number(document.getElementById('numPlayers').value));
 // console.log('course selected', document.querySelector('input[name="course"]:checked').value);
 // console.log(document.getElementById('tee').value);
-
+export class CourseChoices {
+    constructor(choices){
+        this.choices = choices;
+    }
+}
 
 export class GameData {
     constructor(){
