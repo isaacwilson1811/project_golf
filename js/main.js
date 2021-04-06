@@ -7,3 +7,7 @@ import {Render} from './render_mod.js';
 fetchCourses().then(result =>{Render.drawCourseChoices(result)});
 
 
+
+
+
+
