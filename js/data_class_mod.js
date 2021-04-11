@@ -2,8 +2,21 @@
 // console.log('course selected', document.querySelector('input[name="course"]:checked').value);
 // console.log(document.getElementById('tee').value);
 export class CourseChoices {
-    constructor(choices){
-        this.choices = choices;
+    constructor(){
+        this.choices = [];
+    }
+}
+export class Choice {
+    constructor(id,name,imgURL,teeBoxes){
+        this.id = id;
+        this.name = name;
+        this.imgURL = imgURL;
+        this.teeBoxes = [];
+    }
+}
+export class teeBox {
+    constructor(name){
+
     }
 }
 
