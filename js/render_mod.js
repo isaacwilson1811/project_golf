@@ -1,5 +1,6 @@
 import {Form} from './form_submit_mod.js';
-import {numberOfPlayers, namesOfPlayers, selectedCourseID, selectedTeeBox} from './main.js';
+import {numberOfPlayers, selectedTeeBox, gameData} from './main.js';
+import {Player} from './data_class_mod.js';
 
 export class Render {
     static drawSetup1(data,domElm){
@@ -158,13 +159,34 @@ export class Render {
     }
     static drawScores(data,domElm){
         console.log(data);
+        console.log(gameData);
         let boxNum = 0;
-        data.holes[0].teeBoxes.forEach(function(box, index){
+        data.holes[0].teeBoxes.forEach(function(box,index){
             if (box.teeType == selectedTeeBox){
                 boxNum = index;
             }
         });
-        domElm.innerHTML = `
+
+        let yardsOUT = 0;
+        for(let i = 0; i < 9; i++){yardsOUT+= data.holes[i].teeBoxes[boxNum].yards};
+        let yardsIN = 0;
+        for(let i = 9; i < 18; i++){yardsIN += data.holes[i].teeBoxes[boxNum].yards};
+        let yardsTOTAL = yardsOUT + yardsIN;
+
+        let hcpOUT = 0;
+        for(let i = 0; i < 9; i++){hcpOUT += data.holes[i].teeBoxes[boxNum].hcp};
+        let hcpIN = 0;
+        for(let i = 9; i < 18; i++){hcpIN += data.holes[i].teeBoxes[boxNum].hcp};
+        let hcpTOTAL = hcpOUT + hcpIN;
+
+        let parOUT = 0;
+        for(let i = 0; i < 9; i++){parOUT += data.holes[i].teeBoxes[boxNum].par};
+        let parIN = 0;
+        for(let i = 9; i < 18; i++){parIN += data.holes[i].teeBoxes[boxNum].par};
+        let parTOTAL = parOUT + parIN;
+        
+
+        let staticHTML = `
         <div class="container-sm" style="overflow-x:auto;white-space:nowrap;">
         <div class="row">
             <div class="col-sm">
@@ -207,7 +229,7 @@ export class Render {
                             <td>${data.holes[6].teeBoxes[boxNum].yards}</td>
                             <td>${data.holes[7].teeBoxes[boxNum].yards}</td>
                             <td>${data.holes[8].teeBoxes[boxNum].yards}</td>
-                            <td>TOTAL</td>
+                            <td>${yardsOUT}</td>
                             <td>${data.holes[9].teeBoxes[boxNum].yards}</td>
                             <td>${data.holes[10].teeBoxes[boxNum].yards}</td>
                             <td>${data.holes[11].teeBoxes[boxNum].yards}</td>
@@ -217,8 +239,8 @@ export class Render {
                             <td>${data.holes[15].teeBoxes[boxNum].yards}</td>
                             <td>${data.holes[16].teeBoxes[boxNum].yards}</td>
                             <td>${data.holes[17].teeBoxes[boxNum].yards}</td>
-                            <td>TOTAL</td>
-                            <td>TOTAL</td>
+                            <td>${yardsIN}</td>
+                            <td>${yardsTOTAL}</td>
                         </tr>
                         <tr>
                             <th scope="row">HCP</th>
@@ -231,7 +253,7 @@ export class Render {
                             <td>${data.holes[6].teeBoxes[boxNum].hcp}</td>
                             <td>${data.holes[7].teeBoxes[boxNum].hcp}</td>
                             <td>${data.holes[8].teeBoxes[boxNum].hcp}</td>
-                            <td>TOTAL</td>
+                            <td>${hcpOUT}</td>
                             <td>${data.holes[9].teeBoxes[boxNum].hcp}</td>
                             <td>${data.holes[10].teeBoxes[boxNum].hcp}</td>
                             <td>${data.holes[11].teeBoxes[boxNum].hcp}</td>
@@ -241,8 +263,8 @@ export class Render {
                             <td>${data.holes[15].teeBoxes[boxNum].hcp}</td>
                             <td>${data.holes[16].teeBoxes[boxNum].hcp}</td>
                             <td>${data.holes[17].teeBoxes[boxNum].hcp}</td>
-                            <td>TOTAL</td>
-                            <td>TOTAL</td>
+                            <td>${hcpIN}</td>
+                            <td>${hcpTOTAL}</td>
                         </tr>
                         <tr>
                             <th scope="row">PAR</th>
@@ -255,7 +277,7 @@ export class Render {
                             <td>${data.holes[6].teeBoxes[boxNum].par}</td>
                             <td>${data.holes[7].teeBoxes[boxNum].par}</td>
                             <td>${data.holes[8].teeBoxes[boxNum].par}</td>
-                            <td>TOTAL</td>
+                            <td>${parOUT}</td>
                             <td>${data.holes[9].teeBoxes[boxNum].par}</td>
                             <td>${data.holes[10].teeBoxes[boxNum].par}</td>
                             <td>${data.holes[11].teeBoxes[boxNum].par}</td>
@@ -265,111 +287,47 @@ export class Render {
                             <td>${data.holes[15].teeBoxes[boxNum].par}</td>
                             <td>${data.holes[16].teeBoxes[boxNum].par}</td>
                             <td>${data.holes[17].teeBoxes[boxNum].par}</td>
-                            <td>TOTAL</td>
-                            <td>TOTAL</td>
+                            <td>${parIN}</td>
+                            <td>${parTOTAL}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">Player 1</th>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Player 2</th>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Player 3</th>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Player 4</th>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td><input type="number" id="" min="0" value="" step="1" oninput="validity.valid||(value='');"></td>
-                            <td>0</td>
-                            <td>0</td>
-                        </tr>
-                        
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
         `;
+
+        let buffer = '';
+        gameData.players.forEach(function(player){
+            player.updateTotals();
+            let chunk = `
+            <tr>
+                <th scope="row">${player.name}</th>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[0]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[1]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[2]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[3]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[4]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[5]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[6]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[7]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesOUT[8]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td>${player.outTotal}</td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[0]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[1]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[2]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[3]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[4]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[5]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[6]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[7]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="" min="0" value="${player.strokesIN[8]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td>${player.inTotal}</td>
+                <td>${player.courseTotal}</td>
+            </tr>                            
+            `;
+            buffer+=chunk;
+        });
+
+        let closeHTML = `</tbody></table></div></div></div>`;
+
+        let dynamicHTML = buffer + closeHTML;
+
+        domElm.innerHTML = staticHTML + dynamicHTML;
     }
 }

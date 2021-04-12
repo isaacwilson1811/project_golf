@@ -1,5 +1,4 @@
-import {showAppPage, showScores} from './main.js';
-import {numberOfPlayers} from './main.js';
+import {showAppPage, showScores, numberOfPlayers} from './main.js';
 
 export class Form {
     static submitSetup1(data){

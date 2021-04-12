@@ -1,55 +1,31 @@
-// console.log('players', Number(document.getElementById('numPlayers').value));
-// console.log('course selected', document.querySelector('input[name="course"]:checked').value);
-// console.log(document.getElementById('tee').value);
-export class CourseChoices {
-    constructor(){
-        this.choices = [];
-    }
-}
-export class Choice {
-    constructor(id,name,imgURL,teeBoxes){
-        this.id = id;
-        this.name = name;
-        this.imgURL = imgURL;
-        this.teeBoxes = [];
-    }
-}
-export class teeBox {
-    constructor(name){
-
-    }
-}
-
 export class GameData {
-    constructor(){
-        this.numPlayers = 0;
-        this.chosenCourseID = null;
-        this.chosenTeeBox = null;
+    constructor(nP,cID,tB){
+        this.numPlayers = nP;
+        this.cID = cID;
+        this.teeBox = tB;
         this.players = [];
     }
-    addPlayer(player){
-        this.players.push(player);
-    }
 }
 
-export class PlayerData {
-    constructor(name){
+export class Player {
+    constructor(name,index){
+        this.index = index;
         this.name = name;
-        this.strokesOut = [0,0,0,0,0,0,0,0,0];
-        this.strokesIn = [0,0,0,0,0,0,0,0,0];
+        this.strokesOUT = [0,0,0,0,0,0,0,0,0];
+        this.strokesIN = [0,0,0,0,0,0,0,0,0];
         this.outTotal = 0;
         this.inTotal = 0;
         this.courseTotal = 0;
     }
-    recordStrokes(hole,strokes){
-        let array = hole <= 9 ? this.strokesOut : this.strokesIn;
-        array[hole] = strokes;
-    }
+    // recordStrokes(hole,strokes){
+    //     let array = hole <= 9 ? this.strokesOut : this.strokesIn;
+    //     array[hole] = strokes;
+    // }
     updateTotals(){
-        this.outTotal = this.strokesOut.reduce(function(acc,val){
+        this.outTotal = this.strokesOUT.reduce(function(acc,val){
             return acc + (val || 0);
         }, 0);
-        this.inTotal = this.strokesIn.reduce(function(acc,val){
+        this.inTotal = this.strokesIN.reduce(function(acc,val){
             return acc + (val || 0);
         }, 0);
         this.courseTotal = this.outTotal + this.inTotal;

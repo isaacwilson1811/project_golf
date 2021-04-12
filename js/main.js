@@ -1,8 +1,9 @@
 import {API} from './api_handler_mod.js';
 import {Render} from './render_mod.js';
-import {GameData, PlayerData, CourseChoices} from './data_class_mod.js';
+import {GameData, Player} from './data_class_mod.js';
 
 const renderTo = document.getElementById('rendered_content');
+export var gameData;
 export let numberOfPlayers = 0;
 export let namesOfPlayers = [];
 export let selectedCourseID = null;
@@ -24,10 +25,13 @@ export function showAppPage(page,courseID,numPlayers = 1){
 export function showScores(playerNames,teeBox){
     namesOfPlayers = playerNames;
     selectedTeeBox = teeBox;
-    console.log('course ', selectedCourseID);
-    console.log('players ', numberOfPlayers);
-    console.log('names ', namesOfPlayers);
-    console.log('teebox', selectedTeeBox);
+    gameData = new GameData(numberOfPlayers,selectedCourseID,selectedTeeBox);
+
+    namesOfPlayers.forEach(function(name,index){
+        let player = new Player(name,index);
+        gameData.players.push(player);
+    });
+
     API.fetchGame(selectedCourseID).then( data => Render.drawScores(data,renderTo) );
 }
 
