@@ -168,7 +168,7 @@ export class Render {
         <div class="container-sm" style="overflow-x:auto;white-space:nowrap;">
         <div class="row">
             <div class="col-sm">
-                <table class="table">
+                <table class="table table-sm">
                     <thead>
                         <tr>
                             <th scope="col">HOLE</th>
