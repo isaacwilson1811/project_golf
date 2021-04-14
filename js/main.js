@@ -35,4 +35,25 @@ export function showScores(playerNames,teeBox){
     API.fetchGame(selectedCourseID).then( data => Render.drawScores(data,renderTo) );
 }
 
+export function updateScore(elmID,playerIndex,array,hole){
+    
+    let val = parseInt(document.getElementById(elmID).value);
+    gameData.players[playerIndex][array][hole] = val;
+
+    console.log(gameData.players[playerIndex][array][hole]);
+
+    gameData.players[playerIndex].updateTotals();
+
+    let outTID = 'p'+playerIndex+'outT';
+    document.getElementById(outTID).innerText =  ''+gameData.players[playerIndex].outTotal;
+    console.log(outTID);
+    let inTID = 'p'+playerIndex+'inT';
+    document.getElementById(inTID).innerText = gameData.players[playerIndex].inTotal;
+    console.log(inTID);
+    let courseTID = 'p'+playerIndex+'courseT';
+    document.getElementById(courseTID).innerText = gameData.players[playerIndex].courseTotal;
+    console.log(courseTID);
+}
+
+
 showAppPage('setup1');

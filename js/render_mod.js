@@ -1,6 +1,5 @@
 import {Form} from './form_submit_mod.js';
-import {numberOfPlayers, selectedTeeBox, gameData} from './main.js';
-import {Player} from './data_class_mod.js';
+import {numberOfPlayers, selectedTeeBox, gameData, updateScore} from './main.js';
 
 export class Render {
     static drawSetup1(data,domElm){
@@ -295,30 +294,31 @@ export class Render {
         let buffer = '';
         gameData.players.forEach(function(player){
             player.updateTotals();
+            let prefix = `p${player.index}`;
             let chunk = `
             <tr>
                 <th scope="row">${player.name}</th>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[0]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[1]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[2]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[3]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[4]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[5]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[6]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[7]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesOUT[8]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td>${player.outTotal}</td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[0]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[1]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[2]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[3]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[4]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[5]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[6]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[7]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td><input type="number" id="" min="0" value="${player.strokesIN[8]}" step="1" oninput="validity.valid||(value='');"></td>
-                <td>${player.inTotal}</td>
-                <td>${player.courseTotal}</td>
+                <td><input type="number" id="${prefix}out0" min="0" value="${player.strokesOUT[0]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out1" min="0" value="${player.strokesOUT[1]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out2" min="0" value="${player.strokesOUT[2]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out3" min="0" value="${player.strokesOUT[3]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out4" min="0" value="${player.strokesOUT[4]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out5" min="0" value="${player.strokesOUT[5]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out6" min="0" value="${player.strokesOUT[6]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out7" min="0" value="${player.strokesOUT[7]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}out8" min="0" value="${player.strokesOUT[8]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td id="${prefix}outT" >${player.outTotal}</td>
+                <td><input type="number" id="${prefix}in0" min="0" value="${player.strokesIN[0]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in1" min="0" value="${player.strokesIN[1]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in2" min="0" value="${player.strokesIN[2]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in3" min="0" value="${player.strokesIN[3]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in4" min="0" value="${player.strokesIN[4]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in5" min="0" value="${player.strokesIN[5]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in6" min="0" value="${player.strokesIN[6]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in7" min="0" value="${player.strokesIN[7]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td><input type="number" id="${prefix}in8" min="0" value="${player.strokesIN[8]}" step="1" oninput="validity.valid||(value='');"></td>
+                <td id="${prefix}inT" >${player.inTotal}</td>
+                <td id="${prefix}courseT" >${player.courseTotal}</td>
             </tr>                            
             `;
             buffer+=chunk;
@@ -329,5 +329,16 @@ export class Render {
         let dynamicHTML = buffer + closeHTML;
 
         domElm.innerHTML = staticHTML + dynamicHTML;
+
+        gameData.players.forEach(function(player){
+            for (let i = 0; i < 9; i++){
+                let elmID = 'p'+player.index.toString()+'out'+i.toString();
+                document.getElementById(elmID).addEventListener("change", function(){ updateScore(elmID,player.index,"strokesOUT",i); });
+            }
+            for (let i = 0; i < 9; i++){
+                let elmID = 'p'+player.index.toString()+'in'+i.toString();
+                document.getElementById(elmID).addEventListener("change", function(){ updateScore(elmID,player.index,"strokesIN",i); });
+            }
+        });
     }
 }
